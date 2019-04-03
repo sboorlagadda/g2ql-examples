@@ -68,5 +68,16 @@ const CREATE_POST_MUTATION = gql`
 `
 
 export default compose(
-  graphql(CREATE_POST_MUTATION, { name: 'createPostMutation' }),
+  graphql(CREATE_POST_MUTATION, { name: 'createPostMutation' , refetchQueries: [{
+      query: gql`
+      query postsByAuthor($author: String) {
+        Posts(author: [$author]) {
+          title
+          contents
+          author
+        }
+      }
+    `, variables: { author: 'sai@g2ql.com' },
+    }
+  ]}),
 )(withRouter(CreatePost))
